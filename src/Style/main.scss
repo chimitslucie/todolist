@@ -1,2 +1,13 @@
 @import './Utils/Reset.scss';
 @import './Utils/Font.scss';
+@import '~bootstrap/scss/bootstrap';
+
+.App {
+    text-align: center;
+    padding: 60px 0 0 30px;
+}
+
+.title {
+    font-size: 30px;
+    text-decoration: underline;
+}
