@@ -1,0 +1,17 @@
+.todoInput {
+    margin-right: 10px;
+
+    &Btn {
+        padding: 5px;
+        border-radius: 15px;
+        border: 1px solid transparent;
+        background: black;
+        color: white;
+
+        &:hover {
+            border: 1px solid black;
+            background: white;
+            color: black;
+        }
+    }
+}

@@ -1,13 +1,15 @@
 @import './Utils/Reset.scss';
 @import './Utils/Font.scss';
+@import './Components/TodoItem.scss';
+@import './Components/todoList.scss';
 @import '~bootstrap/scss/bootstrap';
 
 .App {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     text-align: center;
     padding: 60px 0 0 30px;
 }
 
-.title {
-    font-size: 30px;
-    text-decoration: underline;
-}
