@@ -1,63 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 
 function TodoList() {
 
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            text: 'RDV',
-            completed: true
-        },
-        {
-            id: 2,
-            text: 'Nettoyer',
-            completed: false
+    const [todos, setTodos] = useState([]);
+    const [task, setTask] = useState('');
+
+    useEffect(() => {
+        const storedTodos = JSON.parse(localStorage.getItem('todos'));
+        if (storedTodos) {
+            setTodos(storedTodos);
         }
-    ]);
+    }, []);
 
-    const [text, setText] = useState('');
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
-    function addTask(text) {
-        const newTask = {
-            id: Date.now,
-            text,
-            completed: false
-        };
-        setTasks([...tasks, newTask]);
-        setText('');
-    }
+    const handleAddTodo = () => {
+        if (task.trim() !== '') {
+            setTodos([...todos, task]);
+        }
+    };
 
-    function deleteTask(id) {
-        setTasks(tasks.filter(tasks => tasks.id !== id));
-    }
-
-    function toggleCompleted(id) {
-        setTasks(tasks.map(task => {
-            if (task.id === id) {
-                return { ...task, completed: !task.completed };
-            } else {
-                return task;
-            }
-        }));
-    }
+    const handleRemoveTodo = (index) => {
+        const newTodos = todos.filter((_, i) => i !== index);
+        setTodos(newTodos);
+    };
 
     return (
-        <div className="todo-list">
-            <input
-            className="todoInput"
-                value={text}
-                onChange={e => setText(e.target.value)}
-            />
-            <button className="todoInputBtn" onClick={() => addTask(text)}>Ajouter</button>
-            {tasks.map(task => (
-                <TodoItem
-                    key={task.id}
-                    task={task}
-                    deleteTask={deleteTask}
-                    toggleCompleted={toggleCompleted}
+        <div className="todo">
+            <div className="listTodoInput">
+                <input
+                    className="todoInput"
+                    type="text"
+                    placeholder="Ajouter une nouvelle tâche"
+                    value={task}
+                    onChange={(e) => setTask(e.target.value)}
                 />
-            ))}
+                <button className="todoInputBtn" onClick={handleAddTodo}>Ajouter</button>
+            </div>
+            <ul className="todoList">
+                {todos.map((todo, index) => (
+                    <li key={index}>
+                        {todo}
+                        <button onClick={() => handleRemoveTodo(index)}>Supprimer</button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
