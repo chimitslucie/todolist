@@ -1,50 +1,53 @@
-import { useState, useEffect } from "react";
-import TodoItem from "./TodoItem";
+import { React, useState, useEffect } from "react";
 
 function TodoList() {
 
     const [todos, setTodos] = useState([]);
     const [task, setTask] = useState('');
 
-    useEffect(() => {
-        const storedTodos = JSON.parse(localStorage.getItem('todos'));
-        if (storedTodos) {
-            setTodos(storedTodos);
-        }
-    }, []);
+    const handleInputChange = (e) => {
+        setTask(e.target.value);
+    };
 
-    useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }, [todos]);
-
-    const handleAddTodo = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         if (task.trim() !== '') {
             setTodos([...todos, task]);
+            setTask('');
+            localStorage.setItem('todos', JSON.stringify([...todos, task]));
         }
     };
 
     const handleRemoveTodo = (index) => {
         const newTodos = todos.filter((_, i) => i !== index);
+        localStorage.removeItem('todos');
         setTodos(newTodos);
     };
 
+    useEffect(() => {
+        const storedTodos = localStorage.getItem('todos');
+        if (storedTodos) {
+            setTodos(JSON.parse(storedTodos));
+        }
+    }, []);
+
     return (
         <div className="todo">
-            <div className="listTodoInput">
+            <form className="listTodoInput" onSubmit={handleSubmit}>
                 <input
                     className="todoInput"
                     type="text"
                     placeholder="Ajouter une nouvelle tâche"
                     value={task}
-                    onChange={(e) => setTask(e.target.value)}
+                    onChange={handleInputChange}
                 />
-                <button className="todoInputBtn" onClick={handleAddTodo}>Ajouter</button>
-            </div>
+                <button className="todoInputBtn" type="submit">Ajouter</button>
+            </form>
             <ul className="todoList">
                 {todos.map((todo, index) => (
-                    <li key={index}>
+                    <li className="todoItem" key={index}>
                         {todo}
-                        <button onClick={() => handleRemoveTodo(index)}>Supprimer</button>
+                        <button className="btnRemove" onClick={() => handleRemoveTodo(index)}>Supprimer</button>
                     </li>
                 ))}
             </ul>
