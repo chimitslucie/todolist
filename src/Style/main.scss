@@ -1,15 +1,21 @@
 @import './Utils/Reset.scss';
 @import './Utils/Font.scss';
-@import './Components/TodoItem.scss';
 @import './Components/todoList.scss';
 @import '~bootstrap/scss/bootstrap';
 
 .App {
+    background: linear-gradient(to bottom right, #1F0196, #7D289B);
+    height: 100vh;
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 60px 0 0 30px;
 }
 
+.todoContent {
+    background: white;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 20px;
+}
